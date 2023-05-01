@@ -13,6 +13,7 @@ public:
     bool delEnrutador(string nombreEnrutador);
     bool existeEnrutador(string enrutador);
     void showRed();
+    map<string, Enrutador> &getRed();
 };
 
 #endif // RED_H

@@ -2,15 +2,20 @@
 #include <enrutador.h>
 #include <red.h>
 #include <string>
+#include <map>
 
 using namespace std;
 
 int main()
 {
     red miRed;
+    miRed.addEnrutador("A");
+    miRed.addEnrutador("B");
+    miRed.addEnrutador("C");
+    miRed.addEnrutador("D");
 
-    int numEnrutadores = 0;
-    cout << "\t\tSimulador de red de Enrutadores \n\n";
+    /*int numEnrutadores = 0;
+    cout << "\t\tSIMULADOR DE RED DE ENRUTADORES \n\n";
     cout << "Para comenzar, cree enrutadores.\n";
     cout << "Cuantos enrutadores desea agregar inicialmente? ";
     cin >> numEnrutadores;
@@ -25,11 +30,12 @@ int main()
         cout << "Ingrese el nombre del enrutador #" <<i+1 << ": ";
         cin >> nombreRouter;
         while (!miRed.addEnrutador(nombreRouter)){
-            cout << "Ingrese el nombre del enrutador #" <<i+1 << ": ";
+            cout << "\nIngrese el nombre del enrutador #" <<i+1 << ": ";
             cin >> nombreRouter;
         }
-    }
+    }*/
 
+    string nombreRouter; //eliminar luego de la prueba
     int op;
     system("cls");
     do{
@@ -40,13 +46,15 @@ int main()
         cout << "(2) Eliminar un enrutador.\n";
         cout << "(3) Modificar un enrutador.\n";
         cout << "(4) Cotizar envio.\n";
-        cout << "(5) Salir.\n";
+        cout << "(5) Mostrar red.\n";
+        cout << "(6) Salir.\n";
         cout << "Opcion: ";
         cin >>op;
 
         switch(op)
         {
         case 1:
+            system("cls");
             cout << "\t\tCREAR ENRUTADOR \n\n";
             cout << "Ingrese el nombre del enrutador: ";
             cin >> nombreRouter;
@@ -60,11 +68,12 @@ int main()
             break;
 
         case 2:
+            system("cls");
             cout << "\t\tELIMINAR UN ENRUTADOR \n\n";
             cout << "Ingrese el nombre del enrutador: ";
             cin >> nombreRouter;
             while (!miRed.delEnrutador(nombreRouter)){
-                cout << "Ingrese el nombre del enrutador: ";
+                cout << "\nIngrese el nombre del enrutador: ";
                 cin >> nombreRouter;
             }
 
@@ -72,11 +81,12 @@ int main()
             break;
 
         case 3:
+            system("cls");
             cout << "\t\tMODIFICAR ENRUTADOR \n\n";
             cout << "Ingrese el nombre del enrutador: ";
             cin >> nombreRouter;
             while (!miRed.existeEnrutador(nombreRouter)){
-                cout << "El enrutador no existe. \n"
+                cout << "\nEl enrutador no existe. \n";
                 cout << "Ingrese el nombre del enrutador: ";
                 cin >> nombreRouter;
             }
@@ -84,40 +94,89 @@ int main()
             int op2;
             do{
                 op2=0;
-                cout << "\nQue deseas hacer con el enrutador " << nombreRouter << " ? \n";
+                cout << "\n\nQue deseas hacer con el enrutador '" << nombreRouter << "' ? \n";
                 cout << "Elija una opcion: \n";
                 cout << "(1) Agregar un nodo (Conectarlo con otro enrutador).\n";
-                cout << "(2) Eliminar un nodo (Desconectarlo de un enrutador).\n";
+                cout << "(2) Remover un nodo (Desconectarlo de un enrutador).\n";
                 cout << "(3) Modificar un nodo (Cambiar su costo).\n";
                 cout << "(4) Volver al menu principal.\n";
                 cout << "Opcion: ";
                 cin >>op2;
+
+                string nombreNodo;
+                int costo;
+                bool nodoEnTabla;
                 switch (op2)
                 {
                 case 1:
+                    system("cls");
+                    cout << "\t\tENRUTADOR '" << nombreRouter << "' \n\n";
                     cout << "\t\tAGREGAR UN NODO \n\n";
                     cout << "Ingrese el nombre del nodo (Enrutador ya creado): ";
                     cin >> nombreNodo;
-                    while (!miRed.existeEnrutador(nombreNodo)){
-                        cout << "\nEl enrutador no existe. \n"
-                            cout << "Ingrese el nombre del enrutador: ";
+                    cout << "\nIngrese el costo de la conexion a ese nodo: ";
+                    cin >> costo;
+
+                    nodoEnTabla = miRed.getRed().at(nombreRouter).nodoConectado(nombreNodo);
+                    while (!miRed.existeEnrutador(nombreNodo) || nodoEnTabla){
+                        if (nodoEnTabla){
+                            cout << "\nEl nodo ya esta conectado al enrutador '"<<nombreRouter <<"'\n\n";
+                            break;
+                        }
+                        else cout << "\nEl enrutador no existe. \n";
+
+                        cout << "\nIngrese de nuevo el nombre del enrutador: ";
                         cin >> nombreNodo;
+                        cout << "\nIngrese el costo de la conexion a ese nodo: ";
+                        cin >> costo;
                     }
 
-                    cout << "\nIngrese el costo de la conexion a ese nodo: ";
+                    if (!nodoEnTabla && miRed.getRed().at(nombreRouter).addNodo(nombreNodo, costo)) {
+                        cout<<"\nNodo '"<<nombreNodo<<"' agregado al enrutador '"<<nombreRouter<<"' con exito.\n";
+                    }
+                    else cout << "Error al agregar un nodo en el enrutador '"<<nombreRouter<<"'. \n";
 
-
+                    system("pause");
                     break;
 
                 case 2:
+                    system("cls");
+                    cout << "\t\tENRUTADOR '" << nombreRouter << "' \n\n";
+                    cout << "\t\tREMOVER UN NODO \n\n";
+                    cout << "Ingrese el nombre del nodo (Enrutador ya creado): ";
+                    cin >> nombreNodo;
+
+                    nodoEnTabla = miRed.getRed().at(nombreRouter).nodoConectado(nombreNodo);
+                    while (!miRed.existeEnrutador(nombreNodo) || !nodoEnTabla || nombreNodo == nombreRouter){
+                        if (!nodoEnTabla){
+                            cout << "\n El nodo NO esta conectado al enrutador '"<<nombreRouter <<"'\n";
+                            break;
+                        }
+                        else if (nombreNodo==nombreRouter) cout << "Nombre invalido, es igual al nombre del enrutador\n";
+                        else cout << "\nEl enrutador no existe. \n";
+
+                        cout << "\nIngrese de nuevo el nombre del enrutador: ";
+                        cin >> nombreNodo;
+                    }
+
+                    if (nodoEnTabla && miRed.getRed().at(nombreRouter).addNodo(nombreNodo, costo)) {
+                        cout<<"\nNodo '"<<nombreNodo<<"' removido del enrutador '"<<nombreRouter<<"' con exito.\n";
+                    }
+                    else cout << "Error desconocido al remover un nodo del enrutador '"<<nombreRouter<<"'. \n";
+
+                    system("pause");
                     break;
-                case 3:
+
+                    /*case 3:
                     break;
                 case 4:
-                    break;
-                default:
+                    break;*/
+                default: cout << "\nOpcion invalida.\n";
+                        system("pause");
                     break;
                 }
+
+                system("cls");
             }
             while(op2!=4);
 
@@ -127,8 +186,11 @@ int main()
 
             break;
 
+        case 5: miRed.showRed();
+            system("pause");
+            break;
 
-        case 5: cout << "Saliste del programa, adios.\n\n";
+        case 6: cout << "Saliste del programa, adios.\n\n";
             break;
 
         default: cout << "Opcion invalida \n";
@@ -138,7 +200,7 @@ int main()
 
         system("cls");
     }
-    while(op!=5);
+    while(op!=6);
 
     return 0;
 }

@@ -31,7 +31,7 @@ bool red::delEnrutador(string nombreEnrutador)
         for (auto it = MiRed.begin(); it != MiRed.end(); ++it) {
             it->second.delNodo(nombreEnrutador);
         }
-        cout << "El enrutador se elimino correctamente \n";
+        cout << "\nEl enrutador se elimino correctamente \n";
         return true;
     }
     cout << "El enrutador no existe \n";
@@ -42,8 +42,9 @@ bool red::existeEnrutador(string enrutador)
 {
     map<string, Enrutador> :: iterator it;
     it = MiRed.find(enrutador);
-    if (it != MiRed.end())
+    if (it != MiRed.end()){
         return true;
+    }
     return false;
 }
 
@@ -52,8 +53,13 @@ void red::showRed()
     for (auto it = MiRed.begin(); it != MiRed.end(); ++it) {
         cout << "Enrutador " << it->first << ":" << endl;
 
-        for (auto it2 = it->second.getNodos().begin(); it2 != it->second.getNodos().end(); ++it2) {
+        for (auto it2 = it->second.gettablaDeEnrutamiento().begin(); it2 != it->second.gettablaDeEnrutamiento().end(); ++it2) {
             cout << "    " << it2->first << " => " << it2->second << endl;
         }
     }
+}
+
+map<string, Enrutador> &red::getRed()
+{
+    return MiRed;
 }
