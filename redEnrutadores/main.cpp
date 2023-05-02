@@ -11,10 +11,6 @@ using namespace std;
 int main()
 {
     red miRed;
-    /*miRed.addEnrutador("A");
-    miRed.addEnrutador("B");
-    miRed.addEnrutador("C");
-    miRed.addEnrutador("D");*/
 
     int numEnrutadores = 0;
     cout << "\t\tSIMULADOR DE RED DE ENRUTADORES \n\n";
@@ -37,7 +33,6 @@ int main()
         }
     }
 
-    //string nombreRouter; //eliminar luego de la prueba
     int op;
     system("cls");
 
@@ -176,6 +171,7 @@ int main()
                     break;
 
                 case 4:
+                    cout << "Opcion no disponible. \n";
                     system("pause");
                     break;
 
