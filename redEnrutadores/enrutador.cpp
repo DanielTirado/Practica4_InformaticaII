@@ -52,7 +52,7 @@ bool Enrutador::nodoConectado(string nodo)
 {
     map <string, int> :: iterator it;
     it = tablaDeEnrutamiento.find(nodo);
-    if (it != tablaDeEnrutamiento.end()){
+    if (it != tablaDeEnrutamiento.end() || it->second > -1){
         return true;
     }
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <list>
 
 using namespace std;
 
@@ -20,6 +21,11 @@ bool red::addEnrutador(string nombreEnrutador)
     }
 
     MiRed.insert(pair<string, Enrutador>(nombreEnrutador, router));
+    for (auto it = MiRed.begin(); it != MiRed.end(); ++it) {
+        MiRed.at(it->first).addNodo(nombreEnrutador, -1);
+        MiRed.at(nombreEnrutador).addNodo(it->first, -1);
+
+    }
     return true;
 }
 
@@ -31,7 +37,7 @@ bool red::delEnrutador(string nombreEnrutador)
         for (auto it = MiRed.begin(); it != MiRed.end(); ++it) {
             it->second.delNodo(nombreEnrutador);
         }
-        cout << "\nEl enrutador se elimino correctamente \n";
+        cout << "\n\nEl enrutador se elimino correctamente \n";
         return true;
     }
     cout << "El enrutador no existe \n";
@@ -58,6 +64,22 @@ void red::showRed()
         }
     }
 }
+
+/*void red::calcularRuta(string origen, string destino)
+{
+    int minCosto = 0;
+
+    for (auto it = MiRed.begin(); it != MiRed.end(); ++it) {
+        if (it->first !=destino){
+            for (auto it2 = it->second.gettablaDeEnrutamiento.begin(); it2 != it->second.gettablaDeEnrutamiento().end(); ++it2){
+
+            }
+
+        }
+
+    }
+
+}*/
 
 map<string, Enrutador> &red::getRed()
 {

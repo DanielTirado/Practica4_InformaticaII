@@ -13,6 +13,7 @@ public:
     bool delEnrutador(string nombreEnrutador);
     bool existeEnrutador(string enrutador);
     void showRed();
+    void calcularRuta(string origen, string destino);
     map<string, Enrutador> &getRed();
 };
 
